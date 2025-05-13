@@ -1,0 +1,37 @@
+{
+  "components": [
+    {
+      "data": {
+        "contents_checksum": "33d57cda42442cc23cee28d5455fd1c9329e975dbd9970659873b9273d346fae",
+        "source": "",
+        "type": "tar"
+      },
+      "dependencies": [
+        "bq-nix",
+        "bq-win",
+        "core"
+      ],
+      "details": {
+        "description": "Provides the bq tool for interacting with the BigQuery service.",
+        "display_name": "BigQuery Command Line Tool"
+      },
+      "id": "bq",
+      "is_configuration": false,
+      "is_hidden": false,
+      "is_required": false,
+      "platform": {},
+      "platform_required": false,
+      "version": {
+        "build_number": 20230714124024,
+        "version_string": "2.0.94"
+      }
+    }
+  ],
+  "revision": 20230714124024,
+  "schema_version": {
+    "no_update": false,
+    "url": "https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz",
+    "version": 3
+  },
+  "version": "439.0.0"
+}
