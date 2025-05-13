@@ -1,16 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { db, storage } from "../../../lib/firebase";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
+import Image from "next/image";
+import { ref as storageRefFn, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -33,8 +28,8 @@ export default function JobDetailPage() {
 
   useEffect(() => {
     const fetchJob = async () => {
-      const ref = doc(db, "jobs", id as string);
-      const snapshot = await getDoc(ref);
+      const docRef = doc(db, "jobs", id as string);
+      const snapshot = await getDoc(docRef);
       if (snapshot.exists()) {
         setForm(snapshot.data() as any);
       }
@@ -58,28 +53,29 @@ export default function JobDetailPage() {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const ref = doc(db, "jobs", id as string);
-    const snapshot = await getDoc(ref);
+
+    const docRef = doc(db, "jobs", id as string);
+    const snapshot = await getDoc(docRef);
 
     if (!snapshot.exists()) {
       alert("This job no longer exists.");
       return;
     }
 
-    let updatedForm = { ...form };
+    const updatedForm = { ...form };
 
-    // If file selected, upload to Firebase Storage
+    // If a file is selected, upload it to Firebase Storage
     if (file) {
       setUploading(true);
-      const storageRef = ref(storage, `logos/${id}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const logoRef = storageRefFn(storage, `logos/${id}`);
+      const uploadTask = uploadBytesResumable(logoRef, file);
       await uploadTask;
-      const url = await getDownloadURL(storageRef);
+      const url = await getDownloadURL(logoRef);
       updatedForm.logoURL = url;
       setUploading(false);
     }
 
-    await updateDoc(ref, updatedForm);
+    await updateDoc(docRef, updatedForm);
     router.push("/dashboard");
   };
 
@@ -106,21 +102,17 @@ export default function JobDetailPage() {
           required
         />
 
-        {/* Company Logo Preview */}
         {form.logoURL && (
-          <img
-            src={form.logoURL}
-            alt="Company Logo"
-            className="w-32 h-32 object-contain border rounded"
-          />
+           <Image
+           src={form.logoURL}
+           alt="Logo Preview"
+           width={120}
+           height={80}
+           className="rounded"
+         />
         )}
 
-        {/* Upload Logo Input */}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleLogoChange}
-        />
+        <input type="file" accept="image/*" onChange={handleLogoChange} />
 
         <textarea
           className="w-full border px-3 py-2 rounded"
@@ -129,6 +121,7 @@ export default function JobDetailPage() {
           onChange={handleChange}
           value={form.notes}
         />
+
         <select
           className="w-full border px-3 py-2 rounded"
           name="status"
