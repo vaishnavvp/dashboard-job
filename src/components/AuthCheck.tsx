@@ -12,7 +12,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
     const auth = getAuth();
     const unsub = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        router.push("/login");
+        router.push("/");
       } else {
         setChecking(false);
       }
