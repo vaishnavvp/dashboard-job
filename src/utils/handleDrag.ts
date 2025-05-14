@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/utils/handleDrag.ts
 
 export async function handleDrag(
