@@ -1,6 +1,6 @@
 [
     {
-      "origin": ["http://localhost:3000", "http://localhost:3001", "http://localhost:3004"],
+      "origin": ["http://localhost:3000", "http://localhost:3001", "http://localhost:3004", "https://job-dashboard-pipeline.vercel.app/"],
       "method": ["GET", "POST", "PUT"],
       "maxAgeSeconds": 3600,
       "responseHeader": ["Content-Type", "Authorization"]
