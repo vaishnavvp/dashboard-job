@@ -180,20 +180,23 @@ function Column({ id, jobs }: { id: string; jobs: any[] }) {
   return (
     <div
       ref={setNodeRef}
-      className="bg-gray-100 dark:bg-gray-800 rounded shadow p-3 min-h-[200px]"
+      className="bg-gray-100 dark:bg-gray-800 rounded shadow p-3 min-h-[500px] flex flex-col"
     >
       <h2 className="capitalize font-semibold mb-3">{id}</h2>
-      <SortableContext
-        items={jobs.map((j) => j.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
-      </SortableContext>
+      <div className="flex flex-col gap-2 flex-1">
+        <SortableContext
+          items={jobs.map((j) => j.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </SortableContext>
+      </div>
     </div>
   );
 }
+
 
 function JobCard({ job }: { job: any }) {
   const {
