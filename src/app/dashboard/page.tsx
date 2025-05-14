@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { db } from "../../lib/firebase";
 import AuthCheck from "../../components/AuthCheck";
 import ThemeToggle from "../../components/ThemeToggle";
+import { handleDrag } from "src/utils/handleDrag";
 
 const STATUSES = ["applied", "interview", "offer", "hired", "rejected"];
 
@@ -86,16 +87,21 @@ export default function DashboardPage() {
 
   const sensors = useSensors(useSensor(PointerSensor));
 
+  // const onDragEnd = async (event: any) => {
+  //   const { over, active } = event;
+  //   if (!over || over.id === active.id) return;
+
+  //   const targetStatus = over.id;
+  //   const draggedJob = jobs.find((job) => job.id === active.id);
+
+  //   if (draggedJob?.status !== targetStatus) {
+  //     await updateDoc(doc(db, "jobs", active.id), { status: targetStatus });
+  //   }
+  // };
   const onDragEnd = async (event: any) => {
-    const { over, active } = event;
-    if (!over || over.id === active.id) return;
-
-    const targetStatus = over.id;
-    const draggedJob = jobs.find((job) => job.id === active.id);
-
-    if (draggedJob?.status !== targetStatus) {
-      await updateDoc(doc(db, "jobs", active.id), { status: targetStatus });
-    }
+    await handleDrag(jobs, event, async (id, status) => {
+      await updateDoc(doc(db, "jobs", id), { status });
+    });
   };
 
   const handleSignOut = async () => {
